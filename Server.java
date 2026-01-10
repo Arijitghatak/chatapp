@@ -4,6 +4,7 @@
 
     ServerSocket Server; // using through java.net 
     Socket Socket;
+
     BufferedReader br;
     PrintWriter out;
 
@@ -30,17 +31,26 @@
 public void startReading(){
     Runnable r1 = ()->{
         System.out.println("reader started..");
+
+        try {
+
         while (true) { 
-           try { String msg = br.readLine();
-            if (msg.equals("quit")){
+            String msg = br.readLine();
+            if (msg.equals("exit")){
                 System.out.println("client has terminated the chat");
+                Socket.close();
                 break;
             }
             System.out.println("client : " + msg);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+       
     }
+
+     }
+     catch(Exception e){
+           // e.printStackTrace();
+
+            System.out.println("connection closed");
+        }
     };
         new Thread(r1).start();
 
@@ -49,20 +59,28 @@ public void startReading(){
 public void startWriting(){
     System.out.println("writer started ...");
     Runnable r2 = ()->{
-        while (true) {
-            try {
+
+         try {
+
+        while ( !Socket.isClosed()) {
+           
                 
                 BufferedReader br1 = new BufferedReader(new InputStreamReader(System.in));
                 String content = br1.readLine();
                 out.println(content);
                 out.flush();
 
+                if (content.equals("exit")){
+                    Socket.close();
+                    break;
+                }
+            
+            } 
 
+             System.out.println("connection closed");
 
             } catch (Exception e) {
                 e.printStackTrace();
-            } 
-            
         }
     };
         new Thread(r2).start();
