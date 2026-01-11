@@ -44,6 +44,7 @@ public void startReading(){
             String msg = br.readLine();
             if (msg == null || msg.equals("exit")){
                 System.out.println("Server has terminated the chat");
+                
                 gui.onDisconnected();
                 socket.close();
                 break;
@@ -56,6 +57,7 @@ public void startReading(){
 
         }catch(Exception e){
            // e.printStackTrace();
+           gui.onDisconnected();
            System.out.println("connection closed");
     }
     };
@@ -97,16 +99,21 @@ public void startReading(){
    
 
  public void sendMessage(String msg){
-    if (socket != null && !socket.isClosed()) return;
+    try{
+    if (socket == null && socket.isClosed()) return;
         out.println(msg);
+        out.flush();
 
         if (msg.equals("exit")){
-            try {
+            
                 socket.close();
-            } catch (Exception e) {
+                gui.onDisconnected();
+            } 
+        }catch (Exception e) {
                 e.printStackTrace();
+                gui.onDisconnected();
             }
         }
     }
-}
+
  

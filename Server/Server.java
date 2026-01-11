@@ -70,7 +70,7 @@ public void startWriting(){
                 out.println(content);
                 out.flush();
 
-                if (content.equals("exit")){
+                if (content==null || content.equals("exit")){
                     Socket.close();
                     break;
                 }
