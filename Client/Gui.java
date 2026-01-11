@@ -30,6 +30,7 @@ public class Gui {
     }
 
     // shows the window when the app starts 
+    
     public void start(){
         frame.setVisible(true);
     }

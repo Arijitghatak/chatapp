@@ -5,14 +5,16 @@
  
  class Client {
 
-    Socket socket ;
-    BufferedReader br;
-    PrintWriter out;
+    Socket socket ;       // connection to the server
+    BufferedReader br;    // reads messages from server
+    PrintWriter out;      // send message to server
 
-    private Gui gui;
+    private Gui gui;      // reference to Gui class for updating UI
 
-public Client (Gui gui){
 
+    // client starts and connects to the server (constructor)
+
+public Client (Gui gui){ 
 this.gui = gui;
 
     try {
@@ -24,7 +26,7 @@ this.gui = gui;
 
            out = new PrintWriter(socket.getOutputStream(),true);
 
-           startReading ();
+           startReading (); // start listening for server messages
           // startWriting();
 
 
@@ -33,6 +35,8 @@ this.gui = gui;
     }
 }
 
+
+// runs in bg and listens for messages from server 
 
 public void startReading(){
     Runnable r1 = ()->{
@@ -65,6 +69,7 @@ public void startReading(){
 
     }
 
+    // as we have gui for clinet we don not need writting method here
 
    /*  public void startWriting(){
     System.out.println("writer started ...");
@@ -98,6 +103,9 @@ public void startReading(){
         */
    
 
+
+    // sends a message typed in the GUI to the server
+    
  public void sendMessage(String msg){
     try{
     if (socket == null && socket.isClosed()) return;
