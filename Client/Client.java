@@ -43,14 +43,14 @@ public void startReading(){
         while ( true) { 
             String msg = br.readLine();
             if (msg == null || msg.equals("exit")){
-                 gui.onDisconnected();
                 System.out.println("Server has terminated the chat");
+                gui.onDisconnected();
                 socket.close();
                 break;
             }
             System.out.println("Server : " + msg);
 
-            gui.addMessage("Server: " + msg);
+            gui.addMessage(msg,false);
         
         }
 
@@ -97,7 +97,7 @@ public void startReading(){
    
 
  public void sendMessage(String msg){
-    if (socket != null && !socket.isClosed()){
+    if (socket != null && !socket.isClosed()) return;
         out.println(msg);
 
         if (msg.equals("exit")){
@@ -110,4 +110,3 @@ public void startReading(){
     }
 }
  
-}
